@@ -2,7 +2,7 @@
 #include <thread>
 #include <chrono>
 
-#include "Match/Match.h"
+#include "../Match/Match.h"
 
 using namespace OpenPitch;
 
