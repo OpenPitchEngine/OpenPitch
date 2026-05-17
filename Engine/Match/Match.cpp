@@ -48,12 +48,50 @@ namespace OpenPitch
         std::uniform_int_distribution<int>
             shotChance(0, 99);
 
-        Vector2 ballPosition{
+        MatchState state;
+
+        state.BallPosition = {
             52.5f,
             34.0f
         };
 
-        bool homePossession = true;
+        state.HomePossession = true;
+
+        state.PossessingPlayer = 0;
+
+        for (size_t i = 0;
+             i < HomeTeam_.Players.size();
+             ++i)
+        {
+            PlayerState player;
+
+            player.Position = {
+                20.0f + static_cast<float>(i),
+                10.0f + static_cast<float>(i * 4)
+            };
+
+            state.HomePlayers.push_back(player);
+        }
+
+        for (size_t i = 0;
+             i < AwayTeam_.Players.size();
+             ++i)
+        {
+            PlayerState player;
+
+            player.Position = {
+                85.0f - static_cast<float>(i),
+                10.0f + static_cast<float>(i * 4)
+            };
+
+            state.AwayPlayers.push_back(player);
+        }
+
+        if (!state.HomePlayers.empty())
+        {
+            state.HomePlayers[0].HasBall = true;
+        }
+
         bool goalScoredThisTick = false;
 
         int homePossessionTicks = 0;
@@ -73,11 +111,11 @@ namespace OpenPitch
 
             if (turnoverChance(generator) < 10)
             {
-                homePossession = !homePossession;
+                state.HomePossession = !state.HomePossession;
 
                 result.Events.push_back({
                     currentMinute,
-                    homePossession
+                    state.HomePossession
                     ? "Home wins possession"
                     : "Away wins possession"
                 });
@@ -89,7 +127,7 @@ namespace OpenPitch
             float moveY =
                 verticalMovement(generator);
 
-            if (homePossession)
+            if (state.HomePossession)
             {
                 moveX += 1.2f;
                 homePossessionTicks++;
@@ -100,14 +138,14 @@ namespace OpenPitch
                 awayPossessionTicks++;
             }
 
-            ballPosition.X += moveX;
-            ballPosition.Y += moveY;
+            state.BallPosition.X += moveX;
+            state.BallPosition.Y += moveY;
 
             if (passChance(generator) < 18)
             {
                 result.Events.push_back({
                     currentMinute,
-                    homePossession
+                    state.HomePossession
                     ? "Home completes a pass"
                     : "Away completes a pass"
                 });
@@ -115,7 +153,7 @@ namespace OpenPitch
 
             if (shotChance(generator) < 4)
             {
-                if (homePossession)
+                if (state.HomePossession)
                 {
                     result.HomeShots++;
 
@@ -124,9 +162,9 @@ namespace OpenPitch
                         "Home attempt on goal"
                     });
 
-                    ballPosition.X += 10.0f;
+                    state.BallPosition.X += 10.0f;
 
-                    if (ballPosition.X > 90.0f)
+                    if (state.BallPosition.X > 90.0f)
                     {
                         result.HomeShotsOnTarget++;
 
@@ -145,9 +183,9 @@ namespace OpenPitch
                         "Away attempt on goal"
                     });
 
-                    ballPosition.X -= 10.0f;
+                    state.BallPosition.X -= 10.0f;
 
-                    if (ballPosition.X < 15.0f)
+                    if (state.BallPosition.X < 15.0f)
                     {
                         result.AwayShotsOnTarget++;
 
@@ -161,7 +199,7 @@ namespace OpenPitch
 
             if (!goalScoredThisTick)
             {
-                if (ballPosition.X >= 105.0f)
+                if (state.BallPosition.X >= 105.0f)
                 {
                     result.HomeScore++;
 
@@ -170,14 +208,14 @@ namespace OpenPitch
                         "Home scores"
                     });
 
-                    ballPosition.X = 52.5f;
-                    ballPosition.Y = 34.0f;
+                    state.BallPosition.X = 52.5f;
+                    state.BallPosition.Y = 34.0f;
 
-                    homePossession = false;
+                    state.HomePossession = false;
 
                     goalScoredThisTick = true;
                 }
-                else if (ballPosition.X <= 0.0f)
+                else if (state.BallPosition.X <= 0.0f)
                 {
                     result.AwayScore++;
 
@@ -186,23 +224,23 @@ namespace OpenPitch
                         "Away scores"
                     });
 
-                    ballPosition.X = 52.5f;
-                    ballPosition.Y = 34.0f;
+                    state.BallPosition.X = 52.5f;
+                    state.BallPosition.Y = 34.0f;
 
-                    homePossession = true;
+                    state.HomePossession = true;
 
                     goalScoredThisTick = true;
                 }
             }
 
-            ballPosition.X = std::clamp(
-                ballPosition.X,
+            state.BallPosition.X = std::clamp(
+                state.BallPosition.X,
                 0.0f,
                 105.0f
             );
 
-            ballPosition.Y = std::clamp(
-                ballPosition.Y,
+            state.BallPosition.Y = std::clamp(
+                state.BallPosition.Y,
                 0.0f,
                 68.0f
             );
@@ -229,20 +267,22 @@ namespace OpenPitch
                     100 - result.HomePossession;
             }
 
-            result.Events.push_back({
-                currentMinute,
-                homePossession
-                ? "Home in possession"
-                : "Away in possession"
-            });
-
             Result::Snapshot snapshot;
 
             snapshot.Minute =
                 static_cast<float>(currentMinute);
 
             snapshot.BallPosition =
-                ballPosition;
+                state.BallPosition;
+
+            snapshot.HomeTeamInPossession =
+                state.HomePossession;
+
+            snapshot.HomePlayers =
+                state.HomePlayers;
+
+            snapshot.AwayPlayers =
+                state.AwayPlayers;
 
             snapshot.HomeScore =
                 result.HomeScore;

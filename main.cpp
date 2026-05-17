@@ -97,7 +97,7 @@ int main()
 
         std::cout
             << "Possession: "
-            << snapshot.HomePossession
+            << snapshot.HomeTeamInPossession
             << "% - "
             << snapshot.AwayPossession
             << "%"

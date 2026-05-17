@@ -16,6 +16,15 @@ namespace OpenPitch
         std::string Name;
     };
 
+    struct PlayerState
+    {
+        Vector2 Position;
+
+        float Stamina = 100.0f;
+
+        bool HasBall = false;
+    };
+
     struct Team
     {
         std::string Name;
@@ -32,6 +41,18 @@ namespace OpenPitch
         int Minute;
 
         std::string Description;
+    };
+
+    struct MatchState
+    {
+        Vector2 BallPosition;
+
+        bool HomePossession = true;
+
+        int PossessingPlayer = 0;
+
+        std::vector<PlayerState> HomePlayers;
+        std::vector<PlayerState> AwayPlayers;
     };
 
     struct Result
@@ -56,6 +77,11 @@ namespace OpenPitch
             float Minute = 0.0f;
 
             Vector2 BallPosition;
+
+            bool HomeTeamInPossession = true;
+
+            std::vector<PlayerState> HomePlayers;
+            std::vector<PlayerState> AwayPlayers;
 
             int HomeScore = 0;
             int AwayScore = 0;
