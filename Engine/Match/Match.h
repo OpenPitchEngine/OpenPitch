@@ -19,6 +19,7 @@ namespace OpenPitch
     struct PlayerState
     {
         Vector2 Position;
+        Vector2 BasePosition;
 
         float Stamina = 100.0f;
 
@@ -50,6 +51,9 @@ namespace OpenPitch
         bool HomePossession = true;
 
         int PossessingPlayer = 0;
+
+        bool ShotInProgress = false;
+        bool ShotByHomeTeam = false;
 
         std::vector<PlayerState> HomePlayers;
         std::vector<PlayerState> AwayPlayers;
@@ -100,6 +104,34 @@ namespace OpenPitch
 
         std::vector<Event> Events;
     };
+
+#ifdef _WIN32
+#define OPENPITCH_API __declspec(dllexport)
+#else
+#define OPENPITCH_API __attribute__((visibility("default")))
+#endif
+
+extern "C"
+{
+    struct OpenPitchMatchResult
+    {
+        int HomeScore;
+        int AwayScore;
+
+        int HomePossession;
+        int AwayPossession;
+
+        int HomeShots;
+        int AwayShots;
+
+        int HomeShotsOnTarget;
+        int AwayShotsOnTarget;
+    };
+
+    OPENPITCH_API void OpenPitch_RunMatch(
+        OpenPitchMatchResult* outResult
+    );
+}
 
     class Match
     {

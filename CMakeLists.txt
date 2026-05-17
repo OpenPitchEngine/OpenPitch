@@ -9,11 +9,26 @@ project(
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(OpenPitch
-        main.cpp
+set(CMAKE_OSX_ARCHITECTURES
+        "x86_64;arm64"
+)
+
+add_library(OpenPitch SHARED
         Engine/Match/Match.cpp
 )
 
-target_include_directories(OpenPitch PRIVATE
-        source
+target_include_directories(OpenPitch PUBLIC
+        .
+)
+
+target_compile_definitions(OpenPitch PRIVATE
+        OPENPITCH_EXPORTS
+)
+
+add_executable(OpenPitchApp
+        main.cpp
+)
+
+target_link_libraries(OpenPitchApp PRIVATE
+        OpenPitch
 )

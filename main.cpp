@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <algorithm>
 
 #include "Engine/Match/Match.h"
 
@@ -50,6 +51,7 @@ int main()
     );
 
     auto result = match.Play();
+    std::vector<Event> visibleEvents;
 
     constexpr int pitchWidth = 60;
     constexpr int totalRealMilliseconds = 12000;
@@ -97,7 +99,7 @@ int main()
 
         std::cout
             << "Possession: "
-            << snapshot.HomeTeamInPossession
+            << snapshot.HomePossession
             << "% - "
             << snapshot.AwayPossession
             << "%"
@@ -122,10 +124,17 @@ int main()
         const auto& ballPosition =
             snapshot.BallPosition;
 
+        const float clampedBallX =
+            std::clamp(
+                ballPosition.X,
+                1.0f,
+                104.0f
+            );
+
         const int ballX =
             static_cast<int>(
                 (
-                    ballPosition.X
+                    clampedBallX
                     / 105.0f
                 ) * static_cast<float>(
                     pitchWidth - 1
@@ -157,6 +166,45 @@ int main()
         std::cout
             << "H = Home Goal | A = Away Goal | O = Ball"
             << std::endl;
+
+        std::cout << std::endl;
+
+        for (const auto& event : result.Events)
+        {
+            if (
+                event.Minute
+                == static_cast<int>(currentMinute)
+            )
+            {
+                bool alreadyVisible = false;
+
+                for (const auto& visibleEvent : visibleEvents)
+                {
+                    if (
+                        visibleEvent.Minute == event.Minute
+                        && visibleEvent.Description == event.Description
+                    )
+                    {
+                        alreadyVisible = true;
+                        break;
+                    }
+                }
+
+                if (!alreadyVisible)
+                {
+                    visibleEvents.push_back(event);
+                }
+            }
+        }
+
+        for (const auto& event : visibleEvents)
+        {
+            std::cout
+                << event.Minute
+                << "' "
+                << event.Description
+                << std::endl;
+        }
 
         std::this_thread::sleep_for(
             std::chrono::milliseconds(
