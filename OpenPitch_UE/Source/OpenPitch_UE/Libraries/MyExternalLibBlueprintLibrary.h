@@ -1,19 +1,50 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MyExternalLibBlueprintLibrary.h
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+
 #include "MyExternalLibBlueprintLibrary.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class OPENPITCH_UE_API UMyExternalLibBlueprintLibrary : public UBlueprintFunctionLibrary
+USTRUCT(BlueprintType)
+struct FOpenPitchMatchResult
 {
 	GENERATED_BODY()
-	
-	UFUNCTION(BlueprintCallable, Category="MyExternalLib")
-	static FString GetExternalMessage();
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 HomeScore = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 AwayScore = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 HomePossession = 50;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 AwayPossession = 50;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 HomeShots = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 AwayShots = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 HomeShotsOnTarget = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 AwayShotsOnTarget = 0;
+};
+
+UCLASS()
+class OPENPITCH_UE_API
+UMyExternalLibBlueprintLibrary
+	: public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+
+public:
+
+	UFUNCTION(BlueprintCallable)
+	static FOpenPitchMatchResult RunMatch();
 };

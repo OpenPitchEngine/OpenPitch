@@ -1,15 +1,41 @@
 #include "MyExternalLibBlueprintLibrary.h"
+
 #include "OpenPitch.h"
 
-FString UMyExternalLibBlueprintLibrary::GetExternalMessage()
+FOpenPitchMatchResult
+UMyExternalLibBlueprintLibrary::RunMatch()
 {
-	OpenPitchMatchResult Result{};
+	OpenPitchMatchResult NativeResult{};
 
-	OpenPitch_RunMatch(&Result);
-
-	return FString::Printf(
-		TEXT("Home %d - %d Away"),
-		Result.HomeScore,
-		Result.AwayScore
+	OpenPitch_RunMatch(
+		&NativeResult
 	);
+
+	FOpenPitchMatchResult Result;
+
+	Result.HomeScore =
+		NativeResult.HomeScore;
+
+	Result.AwayScore =
+		NativeResult.AwayScore;
+
+	Result.HomePossession =
+		NativeResult.HomePossession;
+
+	Result.AwayPossession =
+		NativeResult.AwayPossession;
+
+	Result.HomeShots =
+		NativeResult.HomeShots;
+
+	Result.AwayShots =
+		NativeResult.AwayShots;
+
+	Result.HomeShotsOnTarget =
+		NativeResult.HomeShotsOnTarget;
+
+	Result.AwayShotsOnTarget =
+		NativeResult.AwayShotsOnTarget;
+
+	return Result;
 }
