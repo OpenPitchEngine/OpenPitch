@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(OpenPitch
         App/App.cpp
-        Match/Match.cpp
+        Content/Match/Match.cpp
 )
 
 target_include_directories(OpenPitch PRIVATE
