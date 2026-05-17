@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "OpenPitch_UE",
+			"Path": "/Users/gbaker/Documents/Git/OpenPitch/OpenPitch_UE/Source/OpenPitch_UE.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "OpenPitch_UEEditor",
+			"Path": "/Users/gbaker/Documents/Git/OpenPitch/OpenPitch_UE/Source/OpenPitch_UEEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

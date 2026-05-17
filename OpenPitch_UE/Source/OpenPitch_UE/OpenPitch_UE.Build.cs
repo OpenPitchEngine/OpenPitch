@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class Testlib_Project : ModuleRules
+public class OpenPitch_UE : ModuleRules
 {
-	public Testlib_Project(ReadOnlyTargetRules Target) : base(Target)
+	public OpenPitch_UE(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	

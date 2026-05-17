@@ -3,14 +3,14 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class Testlib_ProjectEditorTarget : TargetRules
+public class OpenPitch_UEEditorTarget : TargetRules
 {
-	public Testlib_ProjectEditorTarget(TargetInfo Target) : base(Target)
+	public OpenPitch_UEEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
-		ExtraModuleNames.AddRange( new string[] { "Testlib_Project" } );
+		ExtraModuleNames.AddRange( new string[] { "OpenPitch_UE" } );
 		
 		if (Target.Platform == UnrealTargetPlatform.Mac)
 		{

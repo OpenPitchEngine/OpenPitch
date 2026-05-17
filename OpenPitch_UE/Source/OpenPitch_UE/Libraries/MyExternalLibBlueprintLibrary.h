@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class TESTLIB_PROJECT_API UMyExternalLibBlueprintLibrary : public UBlueprintFunctionLibrary
+class OPENPITCH_UE_API UMyExternalLibBlueprintLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 	

@@ -1,0 +1,9 @@
+{
+	"SourceFiles": [
+		"/Users/gbaker/Documents/Git/OpenPitch/OpenPitch_UE/Source/OpenPitch/OpenPitch.Build.cs",
+		"/Users/gbaker/Documents/Git/OpenPitch/OpenPitch_UE/Source/OpenPitch_UE/OpenPitch_UE.Build.cs",
+		"/Users/gbaker/Documents/Git/OpenPitch/OpenPitch_UE/Source/OpenPitch_UE.Target.cs",
+		"/Users/gbaker/Documents/Git/OpenPitch/OpenPitch_UE/Source/OpenPitch_UEEditor.Target.cs"
+	],
+	"EngineVersion": "4.27.2"
+}
