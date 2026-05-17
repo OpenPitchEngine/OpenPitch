@@ -45,25 +45,33 @@ namespace OpenPitch
         int HomePossession = 50;
         int AwayPossession = 50;
 
-        std::vector<int> HomePossessionHistory;
-        std::vector<int> AwayPossessionHistory;
-
-        std::vector<int> HomeScoreHistory;
-        std::vector<int> AwayScoreHistory;
-
         int HomeShots = 0;
         int AwayShots = 0;
 
         int HomeShotsOnTarget = 0;
         int AwayShotsOnTarget = 0;
 
-        std::vector<int> HomeShotsHistory;
-        std::vector<int> AwayShotsHistory;
+        struct Snapshot
+        {
+            float Minute = 0.0f;
 
-        std::vector<int> HomeShotsOnTargetHistory;
-        std::vector<int> AwayShotsOnTargetHistory;
+            Vector2 BallPosition;
 
-        std::vector<Vector2> BallHistory;
+            int HomeScore = 0;
+            int AwayScore = 0;
+
+            int HomePossession = 50;
+            int AwayPossession = 50;
+
+            int HomeShots = 0;
+            int AwayShots = 0;
+
+            int HomeShotsOnTarget = 0;
+            int AwayShotsOnTarget = 0;
+        };
+
+        std::vector<Snapshot> Timeline;
+
         std::vector<Event> Events;
     };
 

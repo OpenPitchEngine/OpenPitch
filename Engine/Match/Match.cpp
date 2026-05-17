@@ -229,38 +229,6 @@ namespace OpenPitch
                     100 - result.HomePossession;
             }
 
-            result.HomePossessionHistory.push_back(
-                result.HomePossession
-            );
-
-            result.AwayPossessionHistory.push_back(
-                result.AwayPossession
-            );
-
-            result.HomeScoreHistory.push_back(
-                result.HomeScore
-            );
-
-            result.AwayScoreHistory.push_back(
-                result.AwayScore
-            );
-
-            result.HomeShotsHistory.push_back(
-                result.HomeShots
-            );
-
-            result.AwayShotsHistory.push_back(
-                result.AwayShots
-            );
-
-            result.HomeShotsOnTargetHistory.push_back(
-                result.HomeShotsOnTarget
-            );
-
-            result.AwayShotsOnTargetHistory.push_back(
-                result.AwayShotsOnTarget
-            );
-
             result.Events.push_back({
                 currentMinute,
                 homePossession
@@ -268,9 +236,39 @@ namespace OpenPitch
                 : "Away in possession"
             });
 
-            result.BallHistory.push_back(
-                ballPosition
-            );
+            Result::Snapshot snapshot;
+
+            snapshot.Minute =
+                static_cast<float>(currentMinute);
+
+            snapshot.BallPosition =
+                ballPosition;
+
+            snapshot.HomeScore =
+                result.HomeScore;
+
+            snapshot.AwayScore =
+                result.AwayScore;
+
+            snapshot.HomePossession =
+                result.HomePossession;
+
+            snapshot.AwayPossession =
+                result.AwayPossession;
+
+            snapshot.HomeShots =
+                result.HomeShots;
+
+            snapshot.AwayShots =
+                result.AwayShots;
+
+            snapshot.HomeShotsOnTarget =
+                result.HomeShotsOnTarget;
+
+            snapshot.AwayShotsOnTarget =
+                result.AwayShotsOnTarget;
+
+            result.Timeline.push_back(snapshot);
         }
 
         return result;

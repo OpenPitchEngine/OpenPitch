@@ -56,14 +56,14 @@ int main()
 
     const int tickCount =
         static_cast<int>(
-            result.BallHistory.size()
+            result.Timeline.size()
         );
 
     const int tickDelay =
         totalRealMilliseconds / tickCount;
 
     for (size_t i = 0;
-         i < result.BallHistory.size();
+         i < result.Timeline.size();
          ++i)
     {
         const float currentMinute =
@@ -72,14 +72,17 @@ int main()
                 / static_cast<float>(tickCount)
             ) * 90.0f;
 
+        const auto& snapshot =
+            result.Timeline[i];
+
         std::cout << "\x1B[2J\x1B[H";
 
         std::cout
             << result.HomeTeam.Name
             << " "
-            << result.HomeScoreHistory[i]
+            << snapshot.HomeScore
             << " - "
-            << result.AwayScoreHistory[i]
+            << snapshot.AwayScore
             << " "
             << result.AwayTeam.Name
             << std::endl;
@@ -94,30 +97,30 @@ int main()
 
         std::cout
             << "Possession: "
-            << result.HomePossessionHistory[i]
+            << snapshot.HomePossession
             << "% - "
-            << result.AwayPossessionHistory[i]
+            << snapshot.AwayPossession
             << "%"
             << std::endl;
 
         std::cout
             << "Shots: "
-            << result.HomeShotsHistory[i]
+            << snapshot.HomeShots
             << " - "
-            << result.AwayShotsHistory[i]
+            << snapshot.AwayShots
             << std::endl;
 
         std::cout
             << "Shots On Target: "
-            << result.HomeShotsOnTargetHistory[i]
+            << snapshot.HomeShotsOnTarget
             << " - "
-            << result.AwayShotsOnTargetHistory[i]
+            << snapshot.AwayShotsOnTarget
             << std::endl;
 
         std::cout << std::endl;
 
         const auto& ballPosition =
-            result.BallHistory[i];
+            snapshot.BallPosition;
 
         const int ballX =
             static_cast<int>(
